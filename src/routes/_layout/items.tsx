@@ -6,8 +6,6 @@ import {z} from "zod"
 import {ChangeEvent} from "react"
 
 import {ItemsService} from "@/client"
-import {ItemActionsMenu} from "@/components/Common/ItemActionsMenu"
-import AddItem from "@/components/Items/AddItem"
 import PendingItems from "@/components/Pending/PendingItems"
 import {
     PaginationItems,
@@ -30,7 +28,7 @@ const itemsSearchSchema = z.object({
     contact: z.string().optional(),
 })
 
-const PER_PAGE = 5
+const PER_PAGE = 10
 
 function getItemsQueryOptions({page, search, category, priority, source, messageType, actionRequired, contact}: {
     page: number;
@@ -240,12 +238,10 @@ function ItemsTable() {
                 <Table.Header>
                     <Table.Row>
                         <Table.ColumnHeader>Title</Table.ColumnHeader>
-                        <Table.ColumnHeader>Description</Table.ColumnHeader>
                         <Table.ColumnHeader>Classification</Table.ColumnHeader>
                         <Table.ColumnHeader>Contacts</Table.ColumnHeader>
                         <Table.ColumnHeader>Source</Table.ColumnHeader>
                         <Table.ColumnHeader>Created</Table.ColumnHeader>
-                        <Table.ColumnHeader>Actions</Table.ColumnHeader>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
@@ -254,11 +250,6 @@ function ItemsTable() {
                             <Table.Cell>
                                 <Text fontWeight="medium">
                                     {item.title || 'Untitled'}
-                                </Text>
-                            </Table.Cell>
-                            <Table.Cell>
-                                <Text color="gray.600">
-                                    {item.description || 'No description'}
                                 </Text>
                             </Table.Cell>
                             <Table.Cell>
@@ -277,25 +268,31 @@ function ItemsTable() {
                                     {formatDate(item.created_at)}
                                 </Text>
                             </Table.Cell>
-                            <Table.Cell>
-                                <ItemActionsMenu item={item}/>
-                            </Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>
             </Table.Root>
 
             {count > PER_PAGE && (
-                <PaginationRoot
-                    count={count}
-                    pageSize={PER_PAGE}
-                    page={page}
-                    onPageChange={(e) => setPage(e.page)}
-                >
-                    <PaginationPrevTrigger/>
-                    <PaginationItems/>
-                    <PaginationNextTrigger/>
-                </PaginationRoot>
+                <Box mt={4}>
+                    <PaginationRoot
+                        count={count}
+                        pageSize={PER_PAGE}
+                        page={page}
+                        onPageChange={(e) => setPage(e.page)}
+                        css={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: '8px'
+                        }}
+                    >
+                        <PaginationPrevTrigger/>
+                        <PaginationItems/>
+                        <PaginationNextTrigger/>
+                    </PaginationRoot>
+                </Box>
             )}
         </Box>
     )
@@ -306,7 +303,6 @@ function Items() {
         <VStack gap={4} align="stretch">
             <Flex justify="space-between" align="center">
                 <Heading size="lg">Items</Heading>
-                <AddItem/>
             </Flex>
             <FilterForm/>
             <ItemsTable/>

@@ -8,8 +8,6 @@ import useAuth from "@/hooks/useAuth"
 import useCustomToast from "@/hooks/useCustomToast"
 import {emailPattern, handleError} from "@/utils"
 import {Field} from "../ui/field"
-import {GoogleOAuthButton} from "@/components/GoogleOAuthButton.tsx";
-import TelegramAuth from "@/components/TelegramAuth.tsx";
 
 const UserInformation = () => {
     const queryClient = useQueryClient()
@@ -132,8 +130,6 @@ const UserInformation = () => {
                     </Flex>
                 </Box>
             </Container>
-            <TelegramAuth/>
-            <GoogleOAuthButton/>
         </VStack>
     )
 }
